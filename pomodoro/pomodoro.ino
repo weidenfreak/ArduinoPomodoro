@@ -3,18 +3,14 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 const int switchPin = 6;
 int switchState = 0;
-
+int prevSwitchState = 0;
 
 unsigned long currentTime = 0;
-int prevSwitchState = 0;
-unsigned long previousTime = 0;
 unsigned long pomodoroInterval = 10000;
 unsigned long breakInterval = 5000;
 unsigned long interval = 0;
-unsigned long currentInterval;
 unsigned long startTime;
-long timeLeft = pomodoroInterval;
-
+long timeLeft = 0;
 
 void setup() {
   lcd.begin(16, 2);
@@ -24,18 +20,13 @@ void setup() {
 
 void loop() {
   switchState = digitalRead(switchPin);
-  currentTime = millis();
-  
-  if (switchState == HIGH) {
-    interval = pomodoroInterval;
-  } else {
-    interval = breakInterval;
-  }
   
   lcd.setCursor(0,1);
-  if(switchState == HIGH) {
-    lcd.print("Work Mode");     
-  } else {    
+  if (switchState == HIGH) {
+    interval = pomodoroInterval;
+    lcd.print("Work Mode");   
+  } else {
+    interval = breakInterval;
     lcd.print("Break Mode");
   }
   
@@ -44,16 +35,15 @@ void loop() {
   
   lcd.setCursor(0,0);
   if(timeLeft < 0) {
-    timeLeft = 0.0000;
+    timeLeft = 0;
     if (switchState == HIGH) {
       lcd.print("Time for a break!");
     } else {
-      lcd.print("Start work!");
+      lcd.print("Start work!      ");
     }
   } else {
     lcd.print("Seconds left: ");
     lcd.print(timeLeft/1000);
-    
   }
   
   if(switchState != prevSwitchState) {
