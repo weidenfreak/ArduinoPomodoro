@@ -6,8 +6,8 @@ int switchState = 0;
 int prevSwitchState = 0;
 
 unsigned long currentTime = 0;
-unsigned long pomodoroInterval = 10000;
-unsigned long breakInterval = 5000;
+unsigned long pomodoroInterval = 1500000;
+unsigned long breakInterval = 300000;
 unsigned long interval = 0;
 unsigned long startTime;
 long timeLeft = 0;
@@ -42,8 +42,8 @@ void loop() {
       lcd.print("Start work!      ");
     }
   } else {
-    lcd.print("Seconds left: ");
-    lcd.print(timeLeft/1000);
+    lcd.print("Minutes left: ");
+    lcd.print(timeLeft/60000);
   }
   
   if(switchState != prevSwitchState) {
